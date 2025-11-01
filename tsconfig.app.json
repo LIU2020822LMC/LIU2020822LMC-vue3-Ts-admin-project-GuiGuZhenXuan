@@ -1,0 +1,21 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "types": ["node", "vite/client", "element-plus/global", "vue"], // 确保包含所需的类型定义
+
+    /* Linting 相关配置 */
+    "strict": true, // 启用严格模式（推荐）
+    "noUnusedLocals": true, // 禁止未使用的局部变量
+    "noUnusedParameters": true, // 禁止未使用的函数参数
+    "noFallthroughCasesInSwitch": true, // 禁止 switch 穿透（无 break）
+    "noUncheckedSideEffectImports": true, // 禁止未检查副作用的导入（Vue 3.4+ 支持）
+
+    /* 补充/修正配置 */
+    "moduleResolution": "bundler", // Vite 推荐的模块解析方式
+    "allowJs": true, // 可选：如果项目中有 JS 文件，启用后可被 TypeScript 识别
+    "resolveJsonModule": true // 支持导入 JSON 文件（Vue 项目常用）
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "src/**/*.d.ts"],
+  "exclude": ["node_modules"] // 明确排除 node_modules（避免冗余解析）
+}
