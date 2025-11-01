@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# 执行 lint-staged 处理暂存区文件
+npx lint-staged
