@@ -1,13 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import SvgIcon from '@/components/SvgIcon/index.vue'
+</script>
 
 <template>
-  <h1>Hello World</h1>
-  <el-button>Default</el-button>
-  <el-button type="primary">Primary</el-button>
-  <el-button type="success">Success</el-button>
-  <el-button type="info">Info</el-button>
-  <el-button type="warning">Warning</el-button>
-  <el-button type="danger">Danger</el-button>
+  <h1>Svg图标测试</h1>
+  <SvgIcon name="home" />
+  <SvgIcon name="test" />
 </template>
 
 <style scoped></style>
