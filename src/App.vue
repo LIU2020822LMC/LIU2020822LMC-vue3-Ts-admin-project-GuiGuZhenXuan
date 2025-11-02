@@ -1,6 +1,4 @@
-<script setup lang="ts">
-console.log(import.meta.env.VITE_APP_BASE_API)
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <h1>Hello World</h1>
