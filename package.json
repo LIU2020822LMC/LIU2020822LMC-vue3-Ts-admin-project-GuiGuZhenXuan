@@ -12,7 +12,8 @@
     "format": "prettier --write \"./**/*.{html,vue,ts,js,json,md}\"",
     "prepare": "husky install",
     "commitlint": "commitlint --config commitlint.config.cjs -e -V",
-    "lint:style": "stylelint src/**/*.{css,scss,vue} --cache --fix"
+    "lint:style": "stylelint src/**/*.{css,scss,vue} --cache --fix",
+    "preinstall": "node ./scripts/preinstall.js"
   },
   "dependencies": {
     "axios": "^1.6.8",
