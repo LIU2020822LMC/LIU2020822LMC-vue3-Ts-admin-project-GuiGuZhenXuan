@@ -14,6 +14,7 @@ const app = createApp(App)
 app.use(ElementPlus, {
   locale: zhCn,
 })
+
 // 使用自定义插件
 app.use(globalComponents)
 app.mount('#app')
