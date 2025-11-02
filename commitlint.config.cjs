@@ -3,7 +3,7 @@ module.exports = {
   // 校验规则
   rules: {
     'type-enum': [
-      2,
+      1,
       'always',
       [
         'feat',
