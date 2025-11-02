@@ -1,11 +1,9 @@
-<script setup lang="ts">
-import SvgIcon from '@/components/SvgIcon/index.vue'
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <h1>Svg图标测试</h1>
   <SvgIcon name="home" />
-  <SvgIcon name="test" />
+  <SvgIcon name="test" width="300px" height="300px" />
 </template>
 
 <style scoped></style>

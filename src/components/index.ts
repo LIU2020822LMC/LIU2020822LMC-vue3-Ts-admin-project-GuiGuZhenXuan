@@ -1,0 +1,14 @@
+// 引入项目中全部的全局组件
+import { App } from 'vue'
+import SvgIcon from './SvgIcon/index.vue'
+// 全局对象
+const allGloablComponents: any = { SvgIcon }
+
+export default {
+  install(app: App) {
+    Object.keys(allGloablComponents).forEach((key) => {
+      // 注册项目全部的全局组件
+      app.component(key, allGloablComponents[key])
+    })
+  },
+}
