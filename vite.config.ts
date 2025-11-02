@@ -13,7 +13,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:10086',
+        target: import.meta.env.VITE_SERVE,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
