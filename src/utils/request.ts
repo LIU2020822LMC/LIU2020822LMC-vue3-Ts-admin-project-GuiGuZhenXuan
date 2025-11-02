@@ -3,7 +3,7 @@ import { ElMessage } from 'element-plus'
 
 // 1. 创建 axios 实例
 const request = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL, // 从环境变量获取基础地址（需在 .env 文件配置）
+  baseURL: import.meta.env.VITE_APP_BASE_API, // 从环境变量获取基础地址（需在 .env 文件配置）
   timeout: 10000, // 超时时间（10秒）
 })
 
