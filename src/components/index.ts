@@ -8,6 +8,7 @@ export default {
   install(app: App) {
     Object.keys(allGloablComponents).forEach((key) => {
       // 注册项目全部的全局组件
+      // 注册全局组件：app.component(组件名, 组件)
       app.component(key, allGloablComponents[key])
     })
   },

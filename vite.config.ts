@@ -7,10 +7,11 @@ import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 export default defineConfig({
   plugins: [
     vue(),
+    // 使用svg需要用到的插件
     createSvgIconsPlugin({
-      // Specify the icon folder to be cached
+      // 指定要缓存的图标文件夹
       iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
-      // Specify symbolId format
+      // 指定symbolId格式
       symbolId: 'icon-[dir]-[name]',
     }),
   ],
@@ -26,6 +27,15 @@ export default defineConfig({
         target: 'http://127.0.0.1:10086',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
+  },
+  // css的全局配置
+  css: {
+    preprocessorOptions: {
+      scss: {
+        javascriptEnabled: true,
+        additionalData: '@import "./src/styles/variable.scss";',
       },
     },
   },

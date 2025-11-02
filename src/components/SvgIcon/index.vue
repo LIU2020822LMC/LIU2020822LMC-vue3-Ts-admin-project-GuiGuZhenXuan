@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- svg标签要配合use标签来使用 -->
     <svg :style="{ width: width, height: height }">
       <use :xlink:href="prefix + name" :fill="color"></use>
     </svg>
