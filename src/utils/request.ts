@@ -31,7 +31,7 @@ request.interceptors.response.use(
     // 假设后端接口统一返回格式：{ code: 200, data: ..., '' }
     if (data.code === 200) {
       // 成功状态：直接返回 data 数据
-      return data.data
+      return data
     } else {
       // 业务错误（如参数错误、权限不足等）
       return Promise.reject(new Error(data.data?.message || '操作失败'))
