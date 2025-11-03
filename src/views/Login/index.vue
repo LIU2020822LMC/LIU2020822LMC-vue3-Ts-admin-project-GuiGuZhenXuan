@@ -9,18 +9,25 @@
           <el-form-item>
             <el-input
               :prefix-icon="User"
-              v-model="loginForm.username"
+              v-model="LoginForm.username"
             ></el-input>
           </el-form-item>
           <el-form-item>
             <el-input
               :prefix-icon="Lock"
-              v-model="loginForm.password"
+              v-model="LoginForm.password"
               show-password
             ></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" class="login_btn">登录</el-button>
+            <el-button
+              :loading="loading"
+              type="primary"
+              class="login_btn"
+              @click="LoginBtn(LoginForm)"
+            >
+              登录
+            </el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -31,12 +38,44 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { User, Lock } from '@element-plus/icons-vue'
+import useUserStore from '@/store/modules/user'
+import { loginForm } from '@/api/user/type'
+import { ElNotification } from 'element-plus'
+import { useRouter } from 'vue-router'
 
+const userStore = useUserStore()
 // 收集账号与密码的数据
-const loginForm = ref({
+const LoginForm = ref({
   username: 'admin',
-  password: '123456',
+  password: '111111',
 })
+
+const router = useRouter()
+
+// 加载判断
+const loading = ref(false)
+
+// 登录按钮回调
+const LoginBtn = async (LoginForm: loginForm) => {
+  try {
+    loading.value = true
+    await userStore.getLogin(LoginForm)
+    router.push('/')
+    ElNotification({
+      message: '登陆成功',
+      type: 'success',
+      duration: 1500,
+    })
+    loading.value = false
+  } catch (error) {
+    loading.value = false
+    ElNotification({
+      message: (error as Error).message,
+      type: 'error',
+      duration: 1500,
+    })
+  }
+}
 </script>
 
 <style scoped lang="scss">

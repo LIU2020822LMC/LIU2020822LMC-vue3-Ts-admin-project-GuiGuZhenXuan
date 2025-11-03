@@ -4,12 +4,14 @@ export interface loginForm {
   password: string
 }
 
+export interface LoginData {
+  token: string
+}
+
 // 登录接口返回数据类型
 export interface loginResponseData {
   code: number
-  data: {
-    token: string
-  }
+  data: LoginData
 }
 
 export interface userInfo {

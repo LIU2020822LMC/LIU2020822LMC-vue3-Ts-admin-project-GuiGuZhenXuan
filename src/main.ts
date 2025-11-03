@@ -10,6 +10,8 @@ import globalComponents from '@/components/index'
 import '@/styles/index.scss'
 // 引入路由
 import router from './router'
+// 引入仓库
+import pinia from './store'
 
 const app = createApp(App)
 
@@ -20,4 +22,6 @@ app.use(ElementPlus, {
 app.use(router)
 // 使用自定义插件
 app.use(globalComponents)
+// 安装仓库
+app.use(pinia)
 app.mount('#app')

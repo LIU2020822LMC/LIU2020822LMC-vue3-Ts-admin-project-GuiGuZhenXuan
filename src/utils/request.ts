@@ -10,11 +10,11 @@ const request = axios.create({
 // 2. 请求拦截器（发送请求前处理）
 request.interceptors.request.use(
   (config) => {
-    // 示例：添加 Token（根据实际场景修改）
-    const token = localStorage.getItem('token')
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
-    }
+    // // 示例：添加 Token（根据实际场景修改）
+    // const token = localStorage.getItem('token')
+    // if (token) {
+    //   config.headers.Authorization = `Bearer ${token}`
+    // }
     return config
   },
   (error) => {
@@ -28,14 +28,13 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   (response) => {
     const { data } = response
-    // 假设后端接口统一返回格式：{ code: 200, data: ..., msg: '' }
+    // 假设后端接口统一返回格式：{ code: 200, data: ..., '' }
     if (data.code === 200) {
       // 成功状态：直接返回 data 数据
       return data.data
     } else {
       // 业务错误（如参数错误、权限不足等）
-      ElMessage.error(data.msg || '操作失败')
-      return Promise.reject(new Error(data.msg || 'Error'))
+      return Promise.reject(new Error(data.data?.message || '操作失败'))
     }
   },
   (error) => {
