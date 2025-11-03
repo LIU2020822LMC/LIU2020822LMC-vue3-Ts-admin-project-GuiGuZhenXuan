@@ -44,7 +44,8 @@ export default defineConfig(({ command }) => {
       preprocessorOptions: {
         scss: {
           javascriptEnabled: true,
-          additionalData: '@import "./src/styles/variable.scss";',
+          // 使用 Sass 模块系统：用 @use 将变量注入到每个文件的作用域中
+          additionalData: '@use "src/styles/variable" as *;',
         },
       },
     },
