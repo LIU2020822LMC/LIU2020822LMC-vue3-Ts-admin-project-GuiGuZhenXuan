@@ -1,2 +1,17 @@
 @forward './reset';
 @forward './variable';
+
+// 滚动条外观设置
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: $base-menu-bg-color;
+}
+
+::-webkit-scrollbar-thumb {
+  width: 10px;
+  background-color: #8ef6e4;
+  border-radius: 10px;
+}

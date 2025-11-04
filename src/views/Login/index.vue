@@ -69,7 +69,6 @@ const LoginBtn = async (LoginForm: loginForm) => {
   try {
     // 保证全部表单校验通过再发请求
     await loginFormRef.value.validate()
-
     loading.value = true
     await userStore.getLogin(LoginForm)
     router.push('/')

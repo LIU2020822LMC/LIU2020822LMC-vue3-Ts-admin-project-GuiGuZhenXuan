@@ -6,8 +6,14 @@ export const constantRoute = [
     name: 'login',
   },
   {
-    // 首页
+    // 一级路由布局
     path: '/',
+    component: () => import('@/layout/index.vue'),
+    name: 'layout',
+  },
+  {
+    // 首页
+    path: '/home',
     component: () => import('@/views/Home/index.vue'),
     name: 'home',
   },
