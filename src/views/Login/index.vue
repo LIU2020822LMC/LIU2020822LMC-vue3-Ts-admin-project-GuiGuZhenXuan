@@ -42,6 +42,7 @@ import useUserStore from '@/store/modules/user'
 import { loginForm } from '@/api/user/type'
 import { ElNotification } from 'element-plus'
 import { useRouter } from 'vue-router'
+import getDateTime from '@/utils/time'
 
 const userStore = useUserStore()
 // 收集账号与密码的数据
@@ -62,6 +63,7 @@ const LoginBtn = async (LoginForm: loginForm) => {
     await userStore.getLogin(LoginForm)
     router.push('/')
     ElNotification({
+      title: `Hi, ${getDateTime()}`,
       message: '登陆成功',
       type: 'success',
       duration: 1500,
