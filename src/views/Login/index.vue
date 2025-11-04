@@ -3,16 +3,21 @@
     <el-row>
       <el-col :span="12" :xs="0"></el-col>
       <el-col :span="12" :xs="24">
-        <el-form class="login_form">
+        <el-form
+          class="login_form"
+          :rules="rules"
+          ref="loginFormRef"
+          :model="LoginForm"
+        >
           <h1>Hello</h1>
           <h2>欢迎来到硅谷甄选</h2>
-          <el-form-item>
+          <el-form-item prop="username">
             <el-input
               :prefix-icon="User"
               v-model="LoginForm.username"
             ></el-input>
           </el-form-item>
-          <el-form-item>
+          <el-form-item prop="password">
             <el-input
               :prefix-icon="Lock"
               v-model="LoginForm.password"
@@ -47,9 +52,12 @@ import getDateTime from '@/utils/time'
 const userStore = useUserStore()
 // 收集账号与密码的数据
 const LoginForm = ref({
-  username: 'admin',
-  password: '111111',
+  username: '',
+  password: '',
 })
+
+// 登录表单的引用
+const loginFormRef = ref()
 
 const router = useRouter()
 
@@ -59,6 +67,9 @@ const loading = ref(false)
 // 登录按钮回调
 const LoginBtn = async (LoginForm: loginForm) => {
   try {
+    // 保证全部表单校验通过再发请求
+    await loginFormRef.value.validate()
+
     loading.value = true
     await userStore.getLogin(LoginForm)
     router.push('/')
@@ -77,6 +88,18 @@ const LoginBtn = async (LoginForm: loginForm) => {
       duration: 1500,
     })
   }
+}
+
+// 登陆表单校验规则
+const rules = {
+  username: [
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+    { min: 3, max: 20, message: '用户名长度在3到20个字符', trigger: 'blur' },
+  ],
+  password: [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+    { min: 6, max: 20, message: '密码长度在6到20个字符', trigger: 'blur' },
+  ],
 }
 </script>
 
@@ -100,7 +123,7 @@ const LoginBtn = async (LoginForm: loginForm) => {
     margin: 0 auto;
     padding: 30px;
     border-radius: 16px;
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(242, 240, 243, 0.85);
     backdrop-filter: blur(10px);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     animation: fadeInUp 0.5s ease-out;
