@@ -4,7 +4,13 @@ $color: rgb(174, 0, 255);
 $base-menu-width: 260px;
 
 // 左侧菜单的背景颜色
-$base-menu-bg-color: linear-gradient(to top, #00c6fb 0%, #005bea 100%);
+$base-menu-bg-color: #005bea;
 
 // 顶部导航的高度
 $base-tabbar-height: 50px;
+
+// 左侧菜单logo高度设置
+$base-menu-logo-height: 60px;
+
+// 左侧菜单logo右侧文字大小
+$base-menu-logo-text-size: 20px;
