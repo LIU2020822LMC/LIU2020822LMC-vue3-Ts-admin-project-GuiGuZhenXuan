@@ -3,10 +3,14 @@ import { Login } from '@/api/user/index.ts'
 import type { loginForm, loginResponseData } from '@/api/user/type'
 import type { UserState } from './types/types'
 import { SET_TOKEN, GET_TOKEN } from '@/utils/token'
+// 引入路由（常量路由）
+import { constantRoute } from '@/router/routes'
 
 const useUserStore = defineStore('user', () => {
   // 用户token
-  let token: UserState = GET_TOKEN()
+  let token: UserState['token'] = GET_TOKEN()
+  // 菜单路由
+  const menuList: UserState['menuRoutes'] = constantRoute
 
   // 登录方法
   const getLogin = async (data: loginForm) => {
@@ -19,6 +23,7 @@ const useUserStore = defineStore('user', () => {
   return {
     token,
     getLogin,
+    menuList,
   }
 })
 

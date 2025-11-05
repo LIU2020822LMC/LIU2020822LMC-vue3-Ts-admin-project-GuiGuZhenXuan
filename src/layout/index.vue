@@ -3,21 +3,15 @@
     <!-- 左侧菜单 -->
     <div class="layout_slider">
       <Logo />
-      <el-scrollbar height="Scrollbar">
+      <el-scrollbar class="Scrollbar">
+        <!-- 菜单组件 -->
         <el-menu background-color="#005bea" text-color="#fdfdfd">
-          <el-menu-item index="1">首页</el-menu-item>
-          <el-menu-item index="2">数据大屏</el-menu-item>
-          <el-sub-menu index="3">
-            <template #title>权限管理</template>
-            <el-menu-item index="3-1">用户管理</el-menu-item>
-            <el-menu-item index="3-2">角色管理</el-menu-item>
-            <el-menu-item index="3-3">菜单设置</el-menu-item>
-          </el-sub-menu>
+          <Menu :menuList="userStore.menuList" />
         </el-menu>
       </el-scrollbar>
     </div>
     <!-- 顶部导航 -->
-    <div class="layout_tabbar">铭铭铭</div>
+    <div class="layout_tabbar">顶部导航</div>
     <!-- 内容展示区域 -->
     <div class="layout_main">
       <p style="height: 10000px; background-color: blue">我是一个前端开发者</p>
@@ -27,6 +21,11 @@
 
 <script setup lang="ts">
 import Logo from './Logo/index.vue'
+import Menu from './menu/index.vue'
+// 获取用户相关的小仓库
+import useUserStore from '@/store/modules/user'
+
+const userStore = useUserStore()
 </script>
 
 <style scoped lang="scss">
@@ -40,6 +39,9 @@ import Logo from './Logo/index.vue'
     background-color: $base-menu-bg-color;
     .Scrollbar {
       height: calc(100vh - #{$base-menu-logo-height});
+      .el-menu {
+        border-right: none;
+      }
     }
   }
 
