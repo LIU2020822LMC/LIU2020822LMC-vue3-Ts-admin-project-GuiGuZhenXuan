@@ -14,7 +14,7 @@
     <div class="layout_tabbar">顶部导航</div>
     <!-- 内容展示区域 -->
     <div class="layout_main">
-      <p style="height: 10000px; background-color: blue">我是一个前端开发者</p>
+      <Main />
     </div>
   </div>
 </template>
@@ -22,6 +22,7 @@
 <script setup lang="ts">
 import Logo from './Logo/index.vue'
 import Menu from './menu/index.vue'
+import Main from '@/views/main/index.vue'
 // 获取用户相关的小仓库
 import useUserStore from '@/store/modules/user'
 

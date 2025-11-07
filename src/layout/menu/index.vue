@@ -5,6 +5,7 @@
       <el-menu-item
         v-if="!item.children && !item.meta.hidden"
         :index="item.path"
+        @click="goRouter"
       >
         <template #title>
           <el-icon>
@@ -47,8 +48,16 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
 // 接受父组件传过来的全部路由
 defineProps(['menuList'])
+
+const router = useRouter()
+
+// 菜单点击执行函数
+const goRouter = (path: any) => {
+  router.push(path.index)
+}
 </script>
 
 <script lang="ts">
