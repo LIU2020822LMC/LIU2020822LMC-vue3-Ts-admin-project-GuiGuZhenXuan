@@ -22,6 +22,7 @@
           !item.children[0].meta.hidden
         "
         :index="item.children[0].path"
+        @click="goRouter"
       >
         <template #title>
           <el-icon>
@@ -34,6 +35,7 @@
       <el-sub-menu
         v-if="item.children && item.children.length > 1 && !item.meta.hidden"
         :index="item.path"
+        @click="goRouter"
       >
         <template #title>
           <el-icon>
