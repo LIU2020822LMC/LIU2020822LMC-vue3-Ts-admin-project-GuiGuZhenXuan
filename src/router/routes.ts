@@ -7,6 +7,7 @@ export const constantRoute = [
     meta: {
       title: '登录', // 菜单标题
       hidden: true, // 隐藏菜单 true:隐藏 false:显示
+      icon: 'Setting', // 菜单文字左侧的图标，支持element-plus全部图标
     },
   },
   {
@@ -16,6 +17,7 @@ export const constantRoute = [
     name: 'layout',
     meta: {
       title: 'Layout',
+      icon: 'Setting',
     },
     // 二级路由
     children: [
@@ -26,17 +28,19 @@ export const constantRoute = [
         name: 'home',
         meta: {
           title: '首页',
+          icon: 'HomeFilled',
         },
       },
-      {
-        // 测试
-        path: '/ceshi',
-        component: () => import('@/views/Home/index.vue'),
-        name: '测试',
-        meta: {
-          title: '测试',
-        },
-      },
+      // {
+      //   // 测试
+      //   path: '/ceshi',
+      //   component: () => import('@/views/Home/index.vue'),
+      //   name: '测试',
+      //   meta: {
+      //     title: '测试',
+      //     icon: 'Setting',
+      //   },
+      // },
     ],
   },
   {
@@ -47,6 +51,7 @@ export const constantRoute = [
     meta: {
       title: '404页面',
       hidden: true,
+      icon: 'Setting',
     },
   },
   {
@@ -56,6 +61,7 @@ export const constantRoute = [
     meta: {
       title: '任何',
       hidden: true,
+      icon: 'Setting',
     },
   },
 ]
