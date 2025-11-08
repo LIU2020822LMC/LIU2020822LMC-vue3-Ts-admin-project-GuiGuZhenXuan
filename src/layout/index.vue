@@ -5,13 +5,20 @@
       <Logo />
       <el-scrollbar class="Scrollbar">
         <!-- 菜单组件 -->
-        <el-menu background-color="#005bea" text-color="#fdfdfd">
+        <el-menu
+          background-color="#005bea"
+          text-color="#fdfdfd"
+          :default-active="route.path"
+        >
           <Menu :menuList="userStore.menuList" />
         </el-menu>
       </el-scrollbar>
     </div>
     <!-- 顶部导航 -->
-    <div class="layout_tabbar">顶部导航</div>
+    <div class="layout_tabbar">
+      <!--layout组件的顶部导航-->
+      <tabbar />
+    </div>
     <!-- 内容展示区域 -->
     <div class="layout_main">
       <Main />
@@ -23,8 +30,12 @@
 import Logo from './Logo/index.vue'
 import Menu from './menu/index.vue'
 import Main from '@/views/main/index.vue'
+import { useRoute } from 'vue-router'
+import tabbar from './tabbar/index.vue'
 // 获取用户相关的小仓库
 import useUserStore from '@/store/modules/user'
+
+const route = useRoute()
 
 const userStore = useUserStore()
 </script>
@@ -49,7 +60,6 @@ const userStore = useUserStore()
   .layout_tabbar {
     width: calc(100% - #{$base-menu-width});
     height: $base-tabbar-height;
-    background-color: #146ada;
     position: fixed;
     top: 0px;
     left: $base-menu-width;
