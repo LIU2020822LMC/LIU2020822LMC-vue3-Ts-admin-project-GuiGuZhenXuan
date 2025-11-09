@@ -13,6 +13,7 @@
           text-color="#fdfdfd"
           :default-active="route.path"
           :collapse="LayOutSettingStore.collapse"
+          :router="true"
         >
           <Menu :menuList="userStore.menuList" />
         </el-menu>
