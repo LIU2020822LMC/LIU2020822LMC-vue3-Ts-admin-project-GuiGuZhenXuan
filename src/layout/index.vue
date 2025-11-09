@@ -1,7 +1,10 @@
 <template>
   <div class="layout_container">
     <!-- 左侧菜单 -->
-    <div class="layout_slider">
+    <div
+      class="layout_slider"
+      :class="{ collapse: LayOutSettingStore.collapse }"
+    >
       <Logo />
       <el-scrollbar class="Scrollbar">
         <!-- 菜单组件 -->
@@ -9,18 +12,22 @@
           background-color="#005bea"
           text-color="#fdfdfd"
           :default-active="route.path"
+          :collapse="LayOutSettingStore.collapse"
         >
           <Menu :menuList="userStore.menuList" />
         </el-menu>
       </el-scrollbar>
     </div>
     <!-- 顶部导航 -->
-    <div class="layout_tabbar">
+    <div
+      class="layout_tabbar"
+      :class="{ collapse: LayOutSettingStore.collapse }"
+    >
       <!--layout组件的顶部导航-->
       <tabbar />
     </div>
     <!-- 内容展示区域 -->
-    <div class="layout_main">
+    <div class="layout_main" :class="{ collapse: LayOutSettingStore.collapse }">
       <Main />
     </div>
   </div>
@@ -34,10 +41,13 @@ import { useRoute } from 'vue-router'
 import tabbar from './tabbar/index.vue'
 // 获取用户相关的小仓库
 import useUserStore from '@/store/modules/user'
+// 获取layout配置相关的小仓库
+import useLayOutSettingStore from '@/store/modules/setting'
 
 const route = useRoute()
 
 const userStore = useUserStore()
+const LayOutSettingStore = useLayOutSettingStore()
 </script>
 
 <style scoped lang="scss">
@@ -49,6 +59,10 @@ const userStore = useUserStore()
     width: $base-menu-width;
     height: 100vh;
     background-color: $base-menu-bg-color;
+    transition: all 0.2s;
+    &.collapse {
+      width: $base-menu-min-width;
+    }
     .Scrollbar {
       height: calc(100vh - #{$base-menu-logo-height});
       .el-menu {
@@ -63,6 +77,11 @@ const userStore = useUserStore()
     position: fixed;
     top: 0px;
     left: $base-menu-width;
+    transition: all 0.2s;
+    &.collapse {
+      width: calc(100vw - $base-menu-min-width);
+      left: $base-menu-min-width;
+    }
   }
 
   .layout_main {
@@ -77,6 +96,11 @@ const userStore = useUserStore()
     box-sizing: border-box; // 避免 padding 造成横向溢出
     right: 0;
     bottom: 0; // 避开顶部与侧边
+    transition: all 0.2s;
+    &.collapse {
+      width: calc(100vw - $base-menu-min-width);
+      left: $base-menu-min-width;
+    }
   }
 }
 </style>

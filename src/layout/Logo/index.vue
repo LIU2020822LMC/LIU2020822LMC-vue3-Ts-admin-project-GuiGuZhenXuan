@@ -1,12 +1,15 @@
 <template>
   <div v-if="setting.logoHidden" class="logo">
     <img :src="setting.logo" alt="" />
-    <p>{{ setting.title }}</p>
+    <p v-if="!LayOutSettingStore.collapse">{{ setting.title }}</p>
   </div>
 </template>
 
 <script setup lang="ts">
 import setting from '@/setting'
+import useLayOutSettingStore from '@/store/modules/setting'
+
+const LayOutSettingStore = useLayOutSettingStore()
 </script>
 
 <style scoped lang="scss">
@@ -16,11 +19,11 @@ import setting from '@/setting'
   color: aliceblue;
   display: flex;
   align-items: center;
+  padding: 10px;
   img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    padding: 5px;
   }
   p {
     font-size: $base-menu-logo-text-size;
