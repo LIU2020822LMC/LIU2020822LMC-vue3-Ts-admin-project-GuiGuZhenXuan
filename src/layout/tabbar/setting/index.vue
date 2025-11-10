@@ -14,13 +14,13 @@
     <el-button icon="Setting" circle />
   </el-tooltip>
   <img
-    src="../../../../public/logo.png"
+    :src="userStore.avatar"
     style="width: 28px; height: 28px; margin-left: 10px; border-radius: 50%"
   />
   <!-- 下拉菜单 -->
   <el-dropdown style="margin-left: 10px">
     <span>
-      Admin
+      {{ userStore.username }}
       <el-icon>
         <arrow-down />
       </el-icon>
@@ -36,6 +36,7 @@
 <script setup lang="ts">
 import useLayOutSettingStore from '@/store/modules/setting'
 import { ref } from 'vue'
+import useUserStore from '@/store/modules/user'
 
 const LayOutSettingStore = useLayOutSettingStore()
 // 刷新按钮回调
@@ -58,6 +59,7 @@ const fullScreen = () => {
     fullScreenText.value = '全屏模式'
   }
 }
+const userStore = useUserStore()
 </script>
 
 <style scoped></style>

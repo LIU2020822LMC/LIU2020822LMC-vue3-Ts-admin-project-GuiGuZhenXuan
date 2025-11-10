@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
-import { Login } from '@/api/user/index.ts'
+import { Login, getUserInfo } from '@/api/user/index.ts'
 import type { loginForm, loginResponseData } from '@/api/user/type'
 import type { UserState } from './types/types'
 import { SET_TOKEN, GET_TOKEN } from '@/utils/token'
+import { ref } from 'vue'
 // 引入路由（常量路由）
 import { constantRoute } from '@/router/routes'
 
@@ -11,6 +12,10 @@ const useUserStore = defineStore('user', () => {
   let token: UserState['token'] = GET_TOKEN()
   // 菜单路由
   const menuList: UserState['menuRoutes'] = constantRoute
+  // 用户名字
+  const username = ref<UserState['username']>('')
+  // 用户头像
+  const avatar = ref<UserState['avatar']>('')
 
   // 登录方法
   const getLogin = async (data: loginForm) => {
@@ -20,10 +25,23 @@ const useUserStore = defineStore('user', () => {
     SET_TOKEN(res.data.token as string)
   }
 
+  // 获取用户信息方法
+  const GetUserInfo = async () => {
+    // 获取用户信息进行存储仓库当中（用户名字、用户头像）
+    const res: any = await getUserInfo()
+    if (res.code === 200) {
+      username.value = res.data.checkUser.username
+      avatar.value = res.data.checkUser.avatar
+    }
+  }
+
   return {
     token,
     getLogin,
     menuList,
+    GetUserInfo,
+    username,
+    avatar,
   }
 })
 

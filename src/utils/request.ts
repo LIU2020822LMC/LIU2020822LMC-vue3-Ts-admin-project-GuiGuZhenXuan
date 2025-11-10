@@ -11,10 +11,10 @@ const request = axios.create({
 request.interceptors.request.use(
   (config) => {
     // // 示例：添加 Token（根据实际场景修改）
-    // const token = localStorage.getItem('token')
-    // if (token) {
-    //   config.headers.Authorization = `Bearer ${token}`
-    // }
+    const token = localStorage.getItem('TOKEN')
+    if (token) {
+      config.headers.token = token
+    }
     return config
   },
   (error) => {
