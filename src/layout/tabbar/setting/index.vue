@@ -1,5 +1,5 @@
 <template>
-  <el-button icon="Refresh" circle />
+  <el-button icon="Refresh" circle @click="updateRefresh" />
   <el-button icon="FullScreen" circle />
   <el-button icon="Setting" circle />
   <img
@@ -22,6 +22,14 @@
   </el-dropdown>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import useLayOutSettingStore from '@/store/modules/setting'
+
+const LayOutSettingStore = useLayOutSettingStore()
+// 刷新按钮
+const updateRefresh = () => {
+  LayOutSettingStore.refresh = !LayOutSettingStore.refresh
+}
+</script>
 
 <style scoped></style>
