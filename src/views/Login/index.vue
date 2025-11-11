@@ -46,7 +46,7 @@ import { User, Lock } from '@element-plus/icons-vue'
 import useUserStore from '@/store/modules/user'
 import { loginForm } from '@/api/user/type'
 import { ElNotification } from 'element-plus'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import getDateTime from '@/utils/time'
 
 const userStore = useUserStore()
@@ -60,6 +60,7 @@ const LoginForm = ref({
 const loginFormRef = ref()
 
 const router = useRouter()
+const route = useRoute()
 
 // 加载判断
 const loading = ref(false)
@@ -71,7 +72,9 @@ const LoginBtn = async (LoginForm: loginForm) => {
     await loginFormRef.value.validate()
     loading.value = true
     await userStore.getLogin(LoginForm)
-    router.push('/')
+    // 判断登录的时候，路由路径当中是否有query参数，如果有就往query参数跳转，没有就跳到首页
+    const redirect: any = route.query.redirect
+    router.push({ path: redirect || '/' })
     ElNotification({
       title: `Hi, ${getDateTime()}`,
       message: '登陆成功',
