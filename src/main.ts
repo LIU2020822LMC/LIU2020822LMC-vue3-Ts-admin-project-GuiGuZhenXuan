@@ -12,6 +12,8 @@ import '@/styles/index.scss'
 import router from './router'
 // 引入仓库
 import pinia from './store'
+// 引入路由鉴权文件
+import './permisstion.ts'
 
 const app = createApp(App)
 
@@ -24,4 +26,5 @@ app.use(router)
 app.use(globalComponents)
 // 安装仓库
 app.use(pinia)
+
 app.mount('#app')
