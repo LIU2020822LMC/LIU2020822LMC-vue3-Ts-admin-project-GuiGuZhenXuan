@@ -64,9 +64,9 @@ const userStore = useUserStore()
 const router = useRouter()
 const route = useRoute()
 // 退出登录
-const logOut = () => {
+const logOut = async () => {
   // 调用用户小仓库的Logout
-  userStore.Logout()
+  await userStore.Logout()
   // 跳转到登录页
   router.push({ path: '/login', query: { redirect: route.path } })
 }

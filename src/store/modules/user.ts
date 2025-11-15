@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { Login, getUserInfo } from '@/api/user/index.ts'
+import { Login, getUserInfo, logout } from '@/api/user/index.ts'
 import type { loginForm, loginResponseData } from '@/api/user/type'
 import type { UserState } from './types/types'
 import { SET_TOKEN, GET_TOKEN, REMOVE_TOKEN } from '@/utils/token'
@@ -20,9 +20,9 @@ const useUserStore = defineStore('user', () => {
   // 登录方法
   const getLogin = async (data: loginForm) => {
     const res: loginResponseData = await Login(data)
-    token.value = res.data.token || ''
+    token.value = res.data || ''
     // 持久化存储在本地浏览器
-    SET_TOKEN(res.data.token as string)
+    SET_TOKEN(res.data as string)
   }
 
   // 获取用户信息方法
@@ -30,8 +30,8 @@ const useUserStore = defineStore('user', () => {
     // 获取用户信息进行存储仓库当中（用户名字、用户头像）
     const res: any = await getUserInfo()
     if (res.code === 200) {
-      username.value = res.data.checkUser.username
-      avatar.value = res.data.checkUser.avatar
+      username.value = res.data.name
+      avatar.value = res.data.avatar
       return 'OK'
     } else {
       return Promise.reject('获取用户信息失败')
@@ -39,13 +39,18 @@ const useUserStore = defineStore('user', () => {
   }
 
   // 退出登录按钮
-  const Logout = () => {
-    // 清空用户相关信息
-    token.value = ''
-    username.value = ''
-    avatar.value = ''
-    // 清除持久化存储token
-    REMOVE_TOKEN
+  const Logout = async () => {
+    const res = await logout()
+    if (res.code == 200) {
+      // 清空用户相关信息
+      token.value = ''
+      username.value = ''
+      avatar.value = ''
+      // 清除持久化存储token
+      REMOVE_TOKEN()
+    } else {
+      return Promise.reject(res.message)
+    }
   }
   return {
     token,
