@@ -10,6 +10,7 @@ const userState = useUserStore(pinia)
 
 // 全局前置守卫
 router.beforeEach(async (to: any, from: any, next: any) => {
+  console.log(from.path)
   // 改变网站显示的名字
   document.title = `${setting.title} - ${to.meta.title}`
   // 访问某一个路由之前守卫
