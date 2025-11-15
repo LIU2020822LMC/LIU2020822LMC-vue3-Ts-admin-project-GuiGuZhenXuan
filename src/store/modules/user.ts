@@ -1,6 +1,11 @@
 import { defineStore } from 'pinia'
 import { Login, getUserInfo, logout } from '@/api/user/index.ts'
-import type { loginForm, loginResponseData } from '@/api/user/type'
+import type {
+  loginForm,
+  loginResponseData,
+  userResponseData,
+  logoutResponseData,
+} from '@/api/user/type'
 import type { UserState } from './types/types'
 import { SET_TOKEN, GET_TOKEN, REMOVE_TOKEN } from '@/utils/token'
 import { ref } from 'vue'
@@ -28,7 +33,7 @@ const useUserStore = defineStore('user', () => {
   // 获取用户信息方法
   const GetUserInfo = async () => {
     // 获取用户信息进行存储仓库当中（用户名字、用户头像）
-    const res: any = await getUserInfo()
+    const res: userResponseData = await getUserInfo()
     if (res.code === 200) {
       username.value = res.data.name
       avatar.value = res.data.avatar
@@ -40,7 +45,7 @@ const useUserStore = defineStore('user', () => {
 
   // 退出登录按钮
   const Logout = async () => {
-    const res = await logout()
+    const res: logoutResponseData = await logout()
     if (res.code == 200) {
       // 清空用户相关信息
       token.value = ''

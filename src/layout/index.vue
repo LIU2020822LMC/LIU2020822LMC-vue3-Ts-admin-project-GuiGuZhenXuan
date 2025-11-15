@@ -89,7 +89,7 @@ const LayOutSettingStore = useLayOutSettingStore()
     position: absolute;
     width: calc(100% - #{$base-menu-width});
     height: calc(100vh - #{$base-tabbar-height});
-    background-color: #8ef6e4;
+    background-color: #ffffff;
     left: $base-menu-width;
     top: $base-tabbar-height;
     padding: 20px;
@@ -98,6 +98,7 @@ const LayOutSettingStore = useLayOutSettingStore()
     right: 0;
     bottom: 0; // 避开顶部与侧边
     transition: all 0.2s;
+    border: 1px solid #bdbbbb;
     &.collapse {
       width: calc(100vw - $base-menu-min-width);
       left: $base-menu-min-width;

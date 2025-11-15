@@ -4,33 +4,32 @@ export interface loginForm {
   password: string
 }
 
-// 登录接口返回数据类型
-export interface loginResponseData {
+// 定义全部接口返回数据都拥有的ts类型
+export interface ResponseData {
   code: number
-  data: string
   message: string
   ok: boolean
 }
 
+// 登录接口返回数据类型
+export interface loginResponseData extends ResponseData {
+  data: string
+}
+
 export interface userInfo {
   avatar: string
+  routes: string[]
   buttons: string[]
   name: string
   roles: string[]
 }
 
 // 获取用户信息接口返回数据类型
-export interface userResponseData {
-  code: number
+export interface userResponseData extends ResponseData {
   data: userInfo
-  message: string
-  ok: boolean
 }
 
 // 退出登录接口返回数据类型
-export interface logoutResponseData {
-  code: number
+export interface logoutResponseData extends ResponseData {
   data: string
-  message: string
-  ok: boolean
 }
