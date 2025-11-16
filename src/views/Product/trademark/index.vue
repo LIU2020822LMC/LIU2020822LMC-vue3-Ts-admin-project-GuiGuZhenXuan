@@ -44,6 +44,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { getHasTrademark } from '@/api/product/trademark'
+import { TradeMarkResponseData, Records } from '@/api/product/trademark/type'
 
 // 当前页面
 const currentPage = ref<number>(1)
@@ -52,11 +53,14 @@ const pageSize = ref<number>(10)
 // 存储已有品牌数据总数
 const total = ref<number>(0)
 // 存储已有品牌的数据
-const trademarkArr = ref([])
+const trademarkArr = ref<Records>([])
 
 // 获取已有品牌数据函数
 const GetHasTrademark = async () => {
-  const res = await getHasTrademark(currentPage.value, pageSize.value)
+  const res: TradeMarkResponseData = await getHasTrademark(
+    currentPage.value,
+    pageSize.value,
+  )
   if (res.code == 200) {
     trademarkArr.value = res.data.records
     total.value = res.data.total
