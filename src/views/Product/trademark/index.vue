@@ -31,12 +31,12 @@
     <el-pagination
       v-model:current-page="currentPage"
       v-model:page-size="pageSize"
-      :page-sizes="[5, 10, 15, 200]"
+      :page-sizes="[1, 3, 5, 10, 15, 20]"
       :background="true"
       layout="prev, pager, next, jumper,->, sizes,total"
       :total="total"
       @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
+      @current-change="GetHasTrademark"
     />
   </el-card>
 </template>
@@ -56,9 +56,9 @@ const total = ref<number>(0)
 const trademarkArr = ref<Records>([])
 
 // 获取已有品牌数据函数
-const GetHasTrademark = async () => {
+const GetHasTrademark = async (pager = 1) => {
   const res: TradeMarkResponseData = await getHasTrademark(
-    currentPage.value,
+    (currentPage.value = pager),
     pageSize.value,
   )
   if (res.code == 200) {
@@ -67,12 +67,8 @@ const GetHasTrademark = async () => {
   }
 }
 
-const handleCurrentChange = (e: any) => {
-  console.log(e)
-}
-
-const handleSizeChange = (e: any) => {
-  console.log(e)
+const handleSizeChange = () => {
+  GetHasTrademark()
 }
 
 onMounted(() => {
