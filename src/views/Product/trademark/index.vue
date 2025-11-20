@@ -31,7 +31,7 @@
               icon="Edit"
               circle
               plain
-              @click="updateTrademark(row.id)"
+              @click="updateTrademark(row)"
             />
             <el-button type="danger" size="small" icon="delete" circle plain />
           </template>
@@ -55,7 +55,11 @@
     </el-card>
 
     <!-- 对话框组件 -->
-    <el-dialog v-model="dialogVisible" title="添加品牌" width="500">
+    <el-dialog
+      v-model="dialogVisible"
+      :title="trademarkParams.id ? '修改品牌' : '添加品牌'"
+      width="500"
+    >
       <!-- 表单组件 -->
       <el-form style="width: 80%">
         <el-form-item label="品牌名称" label-width="80px">
@@ -130,14 +134,16 @@ const GetHasTrademark = async (pager = 1) => {
 }
 
 // 编辑更新按钮
-const updateTrademark = (id: number) => {
-  console.log(id)
+const updateTrademark = (row: TradeMark) => {
   dialogVisible.value = true
+  // ES6语法合并对象
+  Object.assign(trademarkParams, row)
 }
 
 // 添加品牌按钮的回调
 const addTrademark = () => {
   // 清空表单的数据
+  trademarkParams.id = 0
   trademarkParams.tmName = ''
   trademarkParams.logoUrl = ''
   // 打开对话框
@@ -162,13 +168,13 @@ const Cancel = () => {
 const OKBtn = async () => {
   const res: any = await AddOrUpdateTrademark(trademarkParams)
   if (res.code == 200) {
-    // 再次获取全部品牌数据
-    await GetHasTrademark()
+    // 再次获取全部品牌数据，修改品牌的话就回到修改的那个品牌的页面
+    await GetHasTrademark(trademarkParams.id ? currentPage.value : 1)
     dialogVisible.value = false
-    ElMessage.success('添加品牌成功')
+    ElMessage.success(trademarkParams.id ? '修改品牌成功' : '添加品牌成功')
   } else {
     dialogVisible.value = false
-    ElMessage.error('添加品牌失败')
+    ElMessage.error(trademarkParams.id ? '修改品牌失败' : '添加品牌失败')
   }
 }
 
