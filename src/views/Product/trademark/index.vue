@@ -59,16 +59,22 @@
       v-model="dialogVisible"
       :title="trademarkParams.id ? '修改品牌' : '添加品牌'"
       width="500"
+      @close="close"
     >
       <!-- 表单组件 -->
-      <el-form style="width: 80%">
-        <el-form-item label="品牌名称" label-width="80px">
+      <el-form
+        style="width: 80%"
+        :model="trademarkParams"
+        :rules="rules"
+        ref="formRef"
+      >
+        <el-form-item label="品牌名称" label-width="100px" prop="tmName">
           <el-input
             placeholder="请您输入品牌名称"
             v-model="trademarkParams.tmName"
           ></el-input>
         </el-form-item>
-        <el-form-item label="品牌LOGO" label-width="80px">
+        <el-form-item label="品牌LOGO" label-width="100x" prop="logoUrl">
           <!-- 上传组件 -->
           <el-upload
             class="avatar-uploader"
@@ -120,6 +126,8 @@ const total = ref<number>(0)
 const trademarkArr = ref<Records>([])
 // 对话框显示
 const dialogVisible = ref<boolean>(false)
+// 添加品牌表单引用
+const formRef = ref()
 
 // 获取已有品牌数据函数
 const GetHasTrademark = async (pager = 1) => {
@@ -138,6 +146,12 @@ const updateTrademark = (row: TradeMark) => {
   dialogVisible.value = true
   // ES6语法合并对象
   Object.assign(trademarkParams, row)
+}
+
+// 对话框关闭的回调
+const close = () => {
+  // 清除表单的验证状态（比如清除校验错误提示、重置字段的 touched 状态等）
+  formRef.value.resetFields()
 }
 
 // 添加品牌按钮的回调
@@ -166,6 +180,8 @@ const Cancel = () => {
   dialogVisible.value = false
 }
 const OKBtn = async () => {
+  // 在你发请求之前，要对于整个表单进行校验
+  await formRef.value.validate()
   const res: any = await AddOrUpdateTrademark(trademarkParams)
   if (res.code == 200) {
     // 再次获取全部品牌数据，修改品牌的话就回到修改的那个品牌的页面
@@ -198,6 +214,32 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
 const handleAvatarSuccess: UploadProps['onSuccess'] = (response) => {
   trademarkParams.logoUrl = response.data
 }
+
+// 品牌自定义校验规则方法
+const validatorTmName = (rules: any, value: any, callBack: any) => {
+  // trim()：字符串的方法，用于去除字符串两端的空白字符（包括空格、换行、制表符等），中间的空白不会被去除。
+  if (value.trim().length >= 2) {
+    callBack()
+  } else {
+    callBack(new Error('品牌名不能少于两个字符'))
+  }
+}
+
+// 品牌LOGO图片的自定义校验规则
+const validatorLogoUrl = (rules: any, value: any, callBack: any) => {
+  // 如果图片上传
+  if (value) {
+    callBack()
+  } else {
+    callBack(new Error('LOGO图片务必上传'))
+  }
+}
+
+// 校验规则
+const rules = ref({
+  tmName: [{ required: true, trigger: 'blur', validator: validatorTmName }],
+  logoUrl: [{ required: true, validator: validatorLogoUrl }],
+})
 
 onMounted(() => {
   GetHasTrademark()
