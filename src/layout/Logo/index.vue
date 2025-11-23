@@ -16,7 +16,7 @@ const LayOutSettingStore = useLayOutSettingStore()
 .logo {
   width: 100%;
   height: $base-menu-logo-height;
-  color: aliceblue;
+  color: var(--el-text-color-primary);
   display: flex;
   align-items: center;
   padding: 10px;
@@ -27,8 +27,10 @@ const LayOutSettingStore = useLayOutSettingStore()
   }
   p {
     font-size: $base-menu-logo-text-size;
+    color: azure;
     margin-left: 5px;
-    font-weight: bolder;
+    font-weight: 600;
+    letter-spacing: 0.2px;
   }
 }
 </style>

@@ -1,0 +1,11 @@
+:root {
+  /* 保留菜单背景需要的渐变与边框变量 */
+  --menu-gradient-start: #2d3748;
+  --menu-gradient-end: #4a5568;
+  --menu-border-color: #2d3748;
+}
+
+/* 恢复全局背景为默认（不使用渐变） */
+body {
+  background: #ffffff;
+}

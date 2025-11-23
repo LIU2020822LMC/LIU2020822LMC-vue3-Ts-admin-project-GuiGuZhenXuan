@@ -34,7 +34,10 @@ request.interceptors.response.use(
       return data
     } else {
       // 业务错误（如参数错误、权限不足等）
-      return Promise.reject(new Error(data.data?.message || '操作失败'))
+      ElMessage.error(data?.msg)
+      return Promise.reject(
+        new Error(data.data?.message || data?.msg || '操作失败'),
+      )
     }
   },
   (error) => {

@@ -9,11 +9,10 @@
       <el-scrollbar class="Scrollbar">
         <!-- 菜单组件 -->
         <el-menu
-          background-color="#005bea"
-          text-color="#fdfdfd"
           :default-active="route.path"
           :collapse="LayOutSettingStore.collapse"
           :router="true"
+          class="el-menu-dark"
         >
           <Menu :menuList="userStore.menuList" />
         </el-menu>
@@ -59,16 +58,18 @@ const LayOutSettingStore = useLayOutSettingStore()
   .layout_slider {
     width: $base-menu-width;
     height: 100vh;
-    background-color: $base-menu-bg-color;
+    background: linear-gradient(
+      180deg,
+      var(--menu-gradient-start),
+      var(--menu-gradient-end)
+    );
     transition: all 0.2s;
     &.collapse {
       width: $base-menu-min-width;
     }
     .Scrollbar {
       height: calc(100vh - #{$base-menu-logo-height});
-      .el-menu {
-        border-right: none;
-      }
+      /* 保留菜单背景渐变，其他样式按默认处理 */
     }
   }
 
@@ -79,6 +80,8 @@ const LayOutSettingStore = useLayOutSettingStore()
     top: 0px;
     left: $base-menu-width;
     transition: all 0.2s;
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--menu-border-color);
     &.collapse {
       width: calc(100vw - $base-menu-min-width);
       left: $base-menu-min-width;
@@ -98,11 +101,30 @@ const LayOutSettingStore = useLayOutSettingStore()
     right: 0;
     bottom: 0; // 避开顶部与侧边
     transition: all 0.2s;
-    border: 1px solid #bdbbbb;
+    border: 1px solid var(--menu-border-color);
     &.collapse {
       width: calc(100vw - $base-menu-min-width);
       left: $base-menu-min-width;
     }
   }
+}
+</style>
+
+<style>
+.el-menu-dark {
+  --el-menu-bg-color: #2d3748;
+  --el-menu-text-color: #e2e8f0;
+  --el-menu-hover-bg-color: #4a5568;
+  --el-menu-active-color: #63b3ed;
+}
+
+.el-menu-dark .el-sub-menu__title:hover,
+.el-menu-dark .el-menu-item:hover {
+  background-color: #4a5568 !important;
+}
+
+.el-menu-dark .el-menu-item.is-active {
+  background-color: #4a5568 !important;
+  color: #63b3ed !important;
 }
 </style>

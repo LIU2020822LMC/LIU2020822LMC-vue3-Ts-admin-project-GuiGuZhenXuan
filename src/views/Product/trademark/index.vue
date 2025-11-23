@@ -6,7 +6,7 @@
         添加品牌
       </el-button>
       <!-- 表格组件 -->
-      <el-table style="margin: 10px 0px" border :data="trademarkArr">
+      <el-table :style="{ margin: '10px 0px' }" :data="trademarkArr">
         <el-table-column
           label="序号"
           width="80px"
@@ -33,7 +33,21 @@
               plain
               @click="updateTrademark(row)"
             />
-            <el-button type="danger" size="small" icon="delete" circle plain />
+            <el-popconfirm
+              :title="`你确定要删除品牌:${row.tmName}?`"
+              width="250px"
+              @confirm="DeleteTrademark(row.id)"
+            >
+              <template #reference>
+                <el-button
+                  type="danger"
+                  size="small"
+                  icon="delete"
+                  circle
+                  plain
+                />
+              </template>
+            </el-popconfirm>
           </template>
         </el-table-column>
         <!-- 空状态组件 - 使用 empty 插槽 -->
@@ -107,7 +121,11 @@
 
 <script setup lang="ts">
 import { ref, onMounted, reactive } from 'vue'
-import { getHasTrademark, AddOrUpdateTrademark } from '@/api/product/trademark'
+import {
+  getHasTrademark,
+  AddOrUpdateTrademark,
+  deleteTrademark,
+} from '@/api/product/trademark'
 import {
   TradeMarkResponseData,
   Records,
@@ -169,6 +187,20 @@ const trademarkParams = reactive<TradeMark>({
   tmName: '',
   logoUrl: '',
 })
+
+// 气泡确认框确定按钮的回调
+const DeleteTrademark = async (id: number) => {
+  const res = await deleteTrademark(id)
+  if (res.code == 200) {
+    // 再次获取已有的品牌数据
+    GetHasTrademark(
+      trademarkArr.value.length > 1 ? currentPage.value : currentPage.value - 1,
+    )
+    ElMessage.success('删除品牌成功')
+  } else {
+    ElMessage.error('删除品牌失败')
+  }
+}
 
 // 改变页面显示数据多少的函数
 const handleSizeChange = () => {
