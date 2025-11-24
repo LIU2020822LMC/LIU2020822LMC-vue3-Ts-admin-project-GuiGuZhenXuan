@@ -97,6 +97,8 @@
             :on-success="handleAvatarSuccess"
             :show-file-list="false"
             name="image"
+            drag
+            :on-error="handleAvatarError"
           >
             <img
               v-if="trademarkParams.logoUrl"
@@ -245,6 +247,11 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
 // 图片上传成功钩子
 const handleAvatarSuccess: UploadProps['onSuccess'] = (response) => {
   trademarkParams.logoUrl = response.data
+}
+
+// 图片上传失败钩子
+const handleAvatarError: UploadProps['onError'] = (response) => {
+  ElMessage.error('图片上传失败', response)
 }
 
 // 品牌自定义校验规则方法

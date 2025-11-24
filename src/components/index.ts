@@ -1,8 +1,9 @@
 // 引入项目中全部的全局组件
 import { App } from 'vue'
 import SvgIcon from './SvgIcon/index.vue'
+import Category from './Category/index.vue'
 // 全局对象
-const allGloablComponents: any = { SvgIcon }
+const allGloablComponents: any = { SvgIcon, Category }
 // 引入elemen-plus提供全部图标组件
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
