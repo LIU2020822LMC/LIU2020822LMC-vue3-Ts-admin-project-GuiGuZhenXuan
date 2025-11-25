@@ -2,11 +2,13 @@
   <el-card>
     <el-form :inline="true">
       <el-form-item label="一级分类">
-        <el-select style="width: 200px">
-          <el-option label="北京" value="北京"></el-option>
-          <el-option label="深圳" value="深圳"></el-option>
-          <el-option label="上海" value="上海"></el-option>
-          <el-option label="广州" value="广州"></el-option>
+        <el-select style="width: 200px" v-model="categoryStore.c1Id">
+          <el-option
+            v-for="item in categoryStore.c1Arr"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          ></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="二级分类">
@@ -29,6 +31,15 @@
   </el-card>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import useCategoryStore from '@/store/modules/category'
+import { onMounted } from 'vue'
+
+const categoryStore = useCategoryStore()
+
+onMounted(() => {
+  categoryStore.GetC1()
+})
+</script>
 
 <style scoped></style>
