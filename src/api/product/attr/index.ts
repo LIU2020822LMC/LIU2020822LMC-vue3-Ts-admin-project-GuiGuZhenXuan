@@ -17,11 +17,15 @@ export const getC1 = () => {
 }
 
 // 获取二级分类接口的方法
-export const getC2 = (category1Id: number) => {
-  return request.get<number, CategoryResponseData>(API.C2_URL + category1Id)
+export const getC2 = (category1Id: number | string) => {
+  return request.get<number | string, CategoryResponseData>(
+    API.C2_URL + category1Id,
+  )
 }
 
 // 获取三级分类接口的方法
-export const getC3 = (category2Id: number) => {
-  return request.get<number, CategoryResponseData>(API.C3_URL + category2Id)
+export const getC3 = (category2Id: number | string) => {
+  return request.get<number | string, CategoryResponseData>(
+    API.C3_URL + category2Id,
+  )
 }
