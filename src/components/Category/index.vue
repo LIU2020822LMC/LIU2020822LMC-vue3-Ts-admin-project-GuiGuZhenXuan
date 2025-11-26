@@ -6,6 +6,7 @@
           style="width: 200px"
           v-model="categoryStore.c1Id"
           @change="handler"
+          :disabled="scene == 0 ? false : true"
         >
           <el-option
             v-for="item in categoryStore.c1Arr"
@@ -20,6 +21,7 @@
           style="width: 200px"
           @change="handler1"
           v-model="categoryStore.c2Id"
+          :disabled="scene == 0 ? false : true"
         >
           <el-option
             v-for="item in categoryStore.c2Arr"
@@ -30,7 +32,11 @@
         </el-select>
       </el-form-item>
       <el-form-item label="三级分类">
-        <el-select style="width: 200px" v-model="categoryStore.c3Id">
+        <el-select
+          style="width: 200px"
+          v-model="categoryStore.c3Id"
+          :disabled="scene == 0 ? false : true"
+        >
           <el-option
             v-for="item in categoryStore.c3Arr"
             :key="item.id"
@@ -66,6 +72,9 @@ const handler1 = () => {
   // 获取三级级分类数据
   categoryStore.GetC3()
 }
+
+// 接受父组件传递过来的scene
+defineProps(['scene'])
 
 onMounted(() => {
   categoryStore.GetC1()

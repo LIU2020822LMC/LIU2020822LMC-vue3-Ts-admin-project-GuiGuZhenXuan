@@ -98,7 +98,6 @@
             :show-file-list="false"
             name="image"
             drag
-            :on-error="handleAvatarError"
           >
             <img
               v-if="trademarkParams.logoUrl"
@@ -218,8 +217,15 @@ const OKBtn = async () => {
   await formRef.value.validate()
   const res: any = await AddOrUpdateTrademark(trademarkParams)
   if (res.code == 200) {
-    // 再次获取全部品牌数据，修改品牌的话就回到修改的那个品牌的页面
-    await GetHasTrademark(trademarkParams.id ? currentPage.value : 1)
+    // 计算目标页码
+    let targetPage = currentPage.value
+    if (!trademarkParams.id) {
+      // 添加品牌：计算新品牌所在的页码（新品牌在数据最后，总数+1）
+      // Math.ceil() 是向上取整
+      targetPage = Math.ceil((total.value + 1) / pageSize.value)
+    }
+    // 再次获取全部品牌数据，修改品牌回到当前页，添加品牌回到新品牌所在页
+    await GetHasTrademark(targetPage)
     dialogVisible.value = false
     ElMessage.success(trademarkParams.id ? '修改品牌成功' : '添加品牌成功')
   } else {
@@ -247,11 +253,6 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
 // 图片上传成功钩子
 const handleAvatarSuccess: UploadProps['onSuccess'] = (response) => {
   trademarkParams.logoUrl = response.data
-}
-
-// 图片上传失败钩子
-const handleAvatarError: UploadProps['onError'] = (response) => {
-  ElMessage.error('图片上传失败', response)
 }
 
 // 品牌自定义校验规则方法

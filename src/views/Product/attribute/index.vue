@@ -1,35 +1,160 @@
 <template>
   <div>
     <!-- 三级分类全局组件 -->
-    <Category />
+    <Category :scene="scene" />
     <el-card style="margin: 10px 0px">
-      <el-button
-        type="primary"
-        plain
-        icon="Plus"
-        :disabled="!categoryStore.c3Id"
-      >
-        添加属性
-      </el-button>
-      <el-table border :style="{ margin: '10px 0px' }">
-        <el-table-column
-          label="序号"
-          type="index"
-          align="center"
-          width="80px"
-        ></el-table-column>
-        <el-table-column label="属性名称" width="120px"></el-table-column>
-        <el-table-column label="属性值名称"></el-table-column>
-        <el-table-column label="操作" width="120px"></el-table-column>
-      </el-table>
+      <div v-show="scene == 0">
+        <el-button
+          type="primary"
+          plain
+          icon="Plus"
+          :disabled="!categoryStore.c3Id"
+          @click="addAttr"
+        >
+          添加属性
+        </el-button>
+        <el-table border :style="{ margin: '10px 0px' }" :data="attrArr">
+          <el-table-column
+            label="序号"
+            type="index"
+            align="center"
+            width="80px"
+          ></el-table-column>
+          <el-table-column
+            label="属性名称"
+            width="120px"
+            prop="attrName"
+          ></el-table-column>
+          <el-table-column label="属性值名称" prop="attrValueList">
+            <template #default="{ row }">
+              <el-tag
+                style="margin: 5px"
+                v-for="item in row.attrValueList"
+                :key="item.id"
+                type="primary"
+              >
+                {{ item.valueName }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" width="120px">
+            <template #default="{ row }">
+              <el-button
+                type="primary"
+                size="small"
+                icon="edit"
+                circle
+                plain
+                @click="updateAttr(row.id)"
+              />
+              <el-button
+                type="danger"
+                size="small"
+                icon="delete"
+                circle
+                plain
+              />
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div v-show="scene == 1">
+        <!-- 展示添加属性与修改数据的结构 -->
+        <el-button type="primary" size="small" plain icon="Plus">
+          添加属性值
+        </el-button>
+        <el-button size="small" plain @click="Cancel">取消</el-button>
+        <el-form :inline="true" style="margin: 10px 0px">
+          <el-form-item label="属性名称">
+            <el-input placeholder="请你输入属性名称"></el-input>
+          </el-form-item>
+        </el-form>
+        <el-table border :style="{ margin: '10px 0px' }">
+          <el-table-column
+            label="序号"
+            width="80px"
+            type="index"
+            align="center"
+          ></el-table-column>
+          <el-table-column label="属性值名称"></el-table-column>
+          <el-table-column label="属性值操作">
+            <template #default="{ row }">
+              <el-button
+                type="primary"
+                size="small"
+                icon="edit"
+                circle
+                plain
+                @click="updateAttr(row.id)"
+              />
+              <el-button
+                type="danger"
+                size="small"
+                icon="delete"
+                circle
+                plain
+              />
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-button type="primary" size="small" plain>保存</el-button>
+        <el-button size="small" plain @click="Cancel">取消</el-button>
+      </div>
     </el-card>
   </div>
 </template>
 
 <script setup lang="ts">
+// 组合式API函数watch
+import { watch, ref } from 'vue'
 import useCategoryStore from '@/store/modules/category'
+import { getAttr } from '@/api/product/attr'
+import { Attr, AttrResponseData } from '@/api/product/attr/type'
 
 const categoryStore = useCategoryStore()
+// 存储已有的属性与属性值
+const attrArr = ref<Attr[]>([])
+
+// 定义card组件内容切换变量
+const scene = ref<number>(0) // 0：显示table，1：展示添加与修改属性结构
+
+// 监听仓库三级分类ID变化
+watch(
+  () => categoryStore.c3Id,
+  () => {
+    // 清空上一次查询的属性与属性值
+    attrArr.value = []
+    // 保证三级分类得才能发请求
+    if (!categoryStore.c3Id) return
+    GetAttr()
+  },
+)
+
+// 获取已有的属性与属性值方法
+const GetAttr = async () => {
+  // 获取分类的ID
+  const { c1Id, c2Id, c3Id } = categoryStore
+  const res: AttrResponseData = await getAttr(c1Id, c2Id, c3Id)
+  if (res.code == 200) {
+    attrArr.value = res.data
+  }
+}
+
+// 添加属性按钮的回调
+const addAttr = () => {
+  scene.value = 1
+}
+
+// table表格修改已有属性按钮的回调
+const updateAttr = (id: number) => {
+  console.log(id)
+  scene.value = 1
+}
+
+// 取消添加属性按钮的回调
+const Cancel = () => {
+  scene.value = 0
+}
 </script>
 
 <style scoped></style>

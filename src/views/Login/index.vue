@@ -10,7 +10,7 @@
           :model="LoginForm"
         >
           <h1>Hello</h1>
-          <h2>欢迎来到硅谷甄选</h2>
+          <h2>欢迎来到潮选 Pro</h2>
           <el-form-item prop="username">
             <el-input
               :prefix-icon="User"
