@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import type { CategoryResponseData, AttrResponseData } from './type'
+import type { CategoryResponseData, AttrResponseData, Attr } from './type'
 
 // 商品分类接口
 enum API {
@@ -11,6 +11,8 @@ enum API {
   C3_URL = '/admin/product/getCategory3/',
   // 获取分类下已有的属性与属性值
   ATTR_URl = '/admin/product/attrInfoList/',
+  // 添加或者修改已有的属性的接口
+  ADDORUPDATEATTR_URL = '/admin/product/saveAttrInfo',
 }
 
 // 获取一级分类接口的方法
@@ -41,4 +43,9 @@ export const getAttr = (
   return request.get<number | string, AttrResponseData>(
     API.ATTR_URl + `${category1Id}/${category2Id}/${category3Id}`,
   )
+}
+
+// 添加或者修改已有的属性的接口
+export const addOrUpdateAttr = (data: Attr) => {
+  return request.post<any, any>(API.ADDORUPDATEATTR_URL, data)
 }
