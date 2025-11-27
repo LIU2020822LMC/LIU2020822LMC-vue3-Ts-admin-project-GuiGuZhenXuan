@@ -45,7 +45,7 @@
                 icon="edit"
                 circle
                 plain
-                @click="updateAttr(row.id)"
+                @click="updateAttr(row)"
               />
               <el-button
                 type="danger"
@@ -186,9 +186,11 @@ const addAttr = () => {
 }
 
 // table表格修改已有属性按钮的回调
-const updateAttr = (id: number) => {
-  console.log(id)
+const updateAttr = (row: Attr) => {
   scene.value = 1
+  // ES6->Object.assign进行对象的合并
+  // 利用深拷贝完成属性修改业务
+  Object.assign(attrParams, JSON.parse(JSON.stringify(row)))
 }
 
 // 取消添加属性按钮的回调
