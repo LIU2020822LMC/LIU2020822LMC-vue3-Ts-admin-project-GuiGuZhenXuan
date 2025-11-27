@@ -1,6 +1,6 @@
 <template>
   <router-view v-slot="{ Component }">
-    <transition name="fade">
+    <transition name="slide-fade">
       <!-- 根据flag来判断是否销毁重建组件 -->
       <component :is="Component" v-if="flag" />
     </transition>
@@ -28,17 +28,37 @@ watch(
 </script>
 
 <style scoped>
-.fade-enter-from {
+/* 滑动淡入效果 */
+.slide-fade-enter-from {
   opacity: 0;
-  transform: scale(0);
+  /* 从右侧50px位置进入 */
+  transform: translateX(50px);
 }
 
-.fade-enter-active {
-  transition: all 0.5s;
+.slide-fade-enter-active {
+  transition: all 0.4s ease-out;
+  /* 缓动效果更自然 */
 }
 
-.fade-enter-to {
+.slide-fade-enter-to {
   opacity: 1;
-  transform: scale(1);
+  transform: translateX(0);
+  /* 回到正常位置 */
+}
+
+/* 可选：添加离开动画，使切换更完整 */
+.slide-fade-leave-from {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.slide-fade-leave-active {
+  transition: all 0.2s ease-in;
+}
+
+.slide-fade-leave-to {
+  opacity: 0;
+  /* 向左侧滑出 */
+  transform: translateX(-50px);
 }
 </style>

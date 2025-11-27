@@ -289,7 +289,7 @@ const toEdit = (row: AttrValue, $index: number) => {
 
 // 路由组件销毁的时候，把仓库分类相关的数据清空
 onBeforeUnmount(() => {
-  // 清空仓库的数据
+  // 清空仓库相关的数据
   categoryStore.c1Id = ''
   categoryStore.c2Id = ''
   categoryStore.c3Id = ''
