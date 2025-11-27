@@ -97,26 +97,24 @@
                 v-model="row.valueName"
                 v-if="row.flag"
                 @blur="toLook(row, $index)"
+                :ref="(element: any) => (inputArr[$index] = element)"
               ></el-input>
-              <div v-else @click="toEdit(row)">{{ row.valueName }}</div>
+              <div v-else @click="toEdit(row, $index)">{{ row.valueName }}</div>
             </template>
           </el-table-column>
           <el-table-column label="属性值操作">
-            <template #default="{ row }">
-              <el-button
-                type="primary"
-                size="small"
-                icon="edit"
-                circle
-                plain
-                @click="updateAttr(row.id)"
-              />
+            <template #default="{ $index }">
               <el-button
                 type="danger"
                 size="small"
                 icon="delete"
                 circle
                 plain
+                @click="
+                  () => {
+                    attrParams.attrValueList.splice($index, 1)
+                  }
+                "
               />
             </template>
           </el-table-column>
@@ -138,7 +136,7 @@
 
 <script setup lang="ts">
 // 组合式API函数watch
-import { watch, ref, reactive } from 'vue'
+import { watch, ref, reactive, nextTick } from 'vue'
 import useCategoryStore from '@/store/modules/category'
 import { getAttr, addOrUpdateAttr } from '@/api/product/attr'
 import { Attr, AttrResponseData, AttrValue } from '@/api/product/attr/type'
@@ -147,6 +145,8 @@ import { ElMessage } from 'element-plus'
 const categoryStore = useCategoryStore()
 // 存储已有的属性与属性值
 const attrArr = ref<Attr[]>([])
+// 存储对应的组件实例el-input
+const inputArr = ref<any>([])
 
 // 定义card组件内容切换变量
 const scene = ref<number>(0) // 0：显示table，1：展示添加与修改属性结构
@@ -211,6 +211,10 @@ const addAttrValue = () => {
     valueName: '',
     flag: true,
   })
+  // 获取最后el-input组件聚焦
+  nextTick(() => {
+    inputArr.value[attrParams.attrValueList.length - 1].focus()
+  })
 }
 
 // 属性值保存按钮回调函数
@@ -254,8 +258,12 @@ const toLook = (row: AttrValue, $index: number) => {
 }
 
 // 属性值div点击事件
-const toEdit = (row: AttrValue) => {
+const toEdit = (row: AttrValue, $index: number) => {
   row.flag = true
+  // nextTick: 响应式数据发生变化，获取更新的DOM(组件实例)
+  nextTick(() => {
+    inputArr.value[$index].focus()
+  })
 }
 </script>
 
