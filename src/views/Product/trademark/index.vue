@@ -81,6 +81,7 @@
         :model="trademarkParams"
         :rules="rules"
         ref="formRef"
+        label-width="100px"
       >
         <el-form-item label="品牌名称" label-width="100px" prop="tmName">
           <el-input

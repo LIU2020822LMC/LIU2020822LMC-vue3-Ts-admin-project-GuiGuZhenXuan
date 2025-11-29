@@ -1,9 +1,11 @@
 <template>
   <!-- 三级分类 -->
   <Category :scene="scene" />
-  <el-card style="margin: 10px 0px">
-    <el-button type="primary" plain icon="Plus">添加SPU</el-button>
-    <el-table border :data="records">
+  <el-card style="margin: 10px 0px" v-show="scene == 0">
+    <el-button type="primary" plain icon="Plus" @click="addSpu">
+      添加SPU
+    </el-button>
+    <el-table border :data="records" :style="{ margin: '10px 0px' }">
       <el-table-column
         label="序号"
         type="index"
@@ -16,28 +18,25 @@
         <template #default>
           <el-button
             type="primary"
-            plain
             icon="Plus"
             circle
             title="添加SPU"
           ></el-button>
           <el-button
             type="primary"
-            plain
             icon="Edit"
             circle
             title="修改SPU"
+            @click="updateSpu"
           ></el-button>
           <el-button
             type="info"
-            plain
             icon="View"
             circle
             title="查看SKU列表"
           ></el-button>
           <el-button
             type="danger"
-            plain
             icon="Delete"
             circle
             title="删除SPU"
@@ -57,6 +56,10 @@
       @size-change="changeSize"
     />
   </el-card>
+  <!-- 添加SKU的子组件 -->
+  <skuForm v-show="scene == 2" />
+  <!-- 添加SPU|修改SPU子组件 -->
+  <spuForm v-show="scene == 1" @changeScene="ChangeSize" />
 </template>
 
 <script setup lang="ts">
@@ -64,11 +67,13 @@ import { ref, watch } from 'vue'
 import useCategoryStore from '@/store/modules/category'
 import { getHasSpu } from '@/api/product/spu'
 import { Records } from '@/api/product/spu/type'
+import skuForm from './skuForm.vue'
+import spuForm from './spuForm.vue'
 
 const categoryStore = useCategoryStore()
 // 存储已有的SPU的数据
 const records = ref<Records>()
-const scene = ref<number>(0)
+const scene = ref<number>(0) // 0:显示已有SPU 1：添加或者修改已有SPU 2：添加SKU的结构
 // 分页器默认页码
 const pageNo = ref<number>(1)
 // 每一页展示几条数据
@@ -93,6 +98,20 @@ const GetHasSpu = async (pager = 1) => {
   const res = await getHasSpu(pageNo.value, pageSize.value, categoryStore.c3Id)
   records.value = res.data.records
   total.value = res.data.total
+}
+
+// 添加新的SPU按钮的回调
+const addSpu = () => {
+  scene.value = 1
+}
+
+const ChangeSize = (number: number) => {
+  scene.value = number
+}
+
+// 修改已有的SPU的按钮的回调
+const updateSpu = () => {
+  scene.value = 1
 }
 
 // 分页器下拉菜单发生变化的时候触发
