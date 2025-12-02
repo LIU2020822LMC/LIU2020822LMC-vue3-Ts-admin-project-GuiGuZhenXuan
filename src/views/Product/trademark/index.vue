@@ -83,13 +83,13 @@
         ref="formRef"
         label-width="100px"
       >
-        <el-form-item label="品牌名称" label-width="100px" prop="tmName">
+        <el-form-item label="品牌名称" prop="tmName">
           <el-input
             placeholder="请您输入品牌名称"
             v-model="trademarkParams.tmName"
           ></el-input>
         </el-form-item>
-        <el-form-item label="品牌LOGO" label-width="100x" prop="logoUrl">
+        <el-form-item label="品牌LOGO" prop="logoUrl">
           <!-- 上传组件 -->
           <el-upload
             class="avatar-uploader"
