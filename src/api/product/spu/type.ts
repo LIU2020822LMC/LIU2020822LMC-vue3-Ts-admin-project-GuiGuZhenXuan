@@ -7,7 +7,7 @@ export interface ResponseData {
 
 // SPU数据的ts类型
 export interface SpuData {
-  id?: number
+  id?: string | number
   spuName: string
   description: string
   category3Id: string | number
