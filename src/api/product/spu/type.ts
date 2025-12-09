@@ -13,7 +13,7 @@ export interface SpuData {
   category3Id: string | number
   tmId: number
   spuSaleAttrList: null
-  spuImageList: null
+  spuImageList: null | SpuImg[]
 }
 
 export type Records = SpuData[]
@@ -76,7 +76,7 @@ export type spuSaleAttrValueList = SaleAttrValue[]
 
 // 销售属性对象ts类型
 export interface SaleAttr {
-  id: number
+  id?: number
   createTime: null
   updateTime: null
   spuId: number
