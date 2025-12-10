@@ -2,14 +2,20 @@
   <el-card style="margin: 10px 0px">
     <el-form label-width="100px">
       <el-form-item label="SPU名称">
-        <el-input placeholder="请你输入SPU名称" style="width: 200px"></el-input>
+        <el-input
+          placeholder="请你输入SPU名称"
+          style="width: 200px"
+          v-model="SpuParams.spuName"
+        ></el-input>
       </el-form-item>
       <el-form-item label="SPU品牌">
-        <el-select style="width: 200px">
-          <el-option label="华为" value=""></el-option>
-          <el-option label="魅族" value=""></el-option>
-          <el-option label="小米" value=""></el-option>
-          <el-option label="苹果" value=""></el-option>
+        <el-select style="width: 200px" v-model="SpuParams.tmId">
+          <el-option
+            v-for="item in allTradeMark"
+            :key="item.id"
+            :label="item.tmName"
+            :value="item.id as number"
+          ></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="SPU描述">
@@ -17,6 +23,7 @@
           type="textarea"
           placeholder="请你输入SPU描述"
           style="width: 400px"
+          v-model="SpuParams.description"
         ></el-input>
       </el-form-item>
       <el-form-item label="SPU图标">
@@ -96,9 +103,20 @@ const saleAttr = ref<SaleAttr[]>([])
 const allSaleAttr = ref<HasSaleAttr[]>([])
 // 存储某一个品牌旗下全部售卖商品的图片
 const imgList = ref<SpuImg[]>([])
+// 存储已有的SPU对象
+const SpuParams = ref<SpuData>({
+  category3Id: '', // 收集三级分类的ID
+  spuName: '', // SPU的名字
+  description: '', // SPU的描述
+  tmId: '', // 品牌的ID
+  spuImageList: [],
+  spuSaleAttrList: null,
+})
 
 // 子组件书写获取数据的方法
 const initHasSpuData = async (spu: SpuData) => {
+  // 存储已有的SPU对象，将来在模板中展示
+  SpuParams.value = spu
   // 获取全部品牌的数据
   const res1: AllTradeMark = await getAllTradeMark()
   allTradeMark.value = res1.data
