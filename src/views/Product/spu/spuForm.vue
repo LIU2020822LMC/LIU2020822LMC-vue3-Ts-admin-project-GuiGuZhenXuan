@@ -40,17 +40,29 @@
         </el-upload>
       </el-form-item>
       <el-form-item label="SPU销售属性">
-        <el-select style="width: 200px">
-          <el-option label="华为" value=""></el-option>
-          <el-option label="魅族" value=""></el-option>
-          <el-option label="小米" value=""></el-option>
-          <el-option label="苹果" value=""></el-option>
+        <el-select
+          v-model="saleArrIdAndValueName"
+          style="width: 200px"
+          :placeholder="
+            unSelectSaleAttr.length
+              ? `还未选择${unSelectSaleAttr.length}个`
+              : '暂无数据可选择'
+          "
+        >
+          <el-option
+            v-for="item in unSelectSaleAttr"
+            :key="item.id"
+            :label="item.name"
+            :value="`${item.id}:${item.name}`"
+          ></el-option>
         </el-select>
         <el-button
           type="primary"
           size="default"
           icon="Plus"
           style="margin-left: 10px"
+          @click="addSaleAttr"
+          :disabled="!(saleArrIdAndValueName.length > 0)"
         >
           添加属性值
         </el-button>
@@ -79,6 +91,7 @@
       <el-table-column label="销售属性值">
         <template #default="{ row }">
           <el-tag
+            style="margin: 0px 3px"
             v-for="item in row.spuSaleAttrValueList"
             :key="item.id"
             closable
@@ -110,7 +123,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import type { UploadUserFile, UploadProps } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import {
@@ -156,11 +169,24 @@ const SpuParams = ref<SpuData>({
 const dialogVisible = ref<boolean>(false)
 const dialogImageUrl = ref<string>('')
 
+// 将来收集还未选择的销售属性的ID与属性值的名字
+const saleArrIdAndValueName = ref<string>('')
+
 // 照片墙点击预览按钮的时候触发的钩子
 const handPictureCardPreview = (file: any) => {
   dialogImageUrl.value = file.url
   dialogVisible.value = true
 }
+
+// 计算出当前SPU还未拥有的销售属性
+const unSelectSaleAttr = computed(() => {
+  const unSelectArr = allSaleAttr.value.filter((item) => {
+    return saleAttr.value.every((item1) => {
+      return item.name != item1.saleAttrName
+    })
+  })
+  return unSelectArr
+})
 
 // 图片上传前的钩子
 const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
@@ -203,6 +229,19 @@ const initHasSpuData = async (spu: SpuData) => {
   const res4: HasSaleAttrResponseData = await getAllSaleAttr()
   allSaleAttr.value = res4.data
 }
+
+const addSaleAttr = () => {
+  const [baseSaleAttrId, saleAttrName] = saleArrIdAndValueName.value.split(':')
+  const newSaleAttr: SaleAttr = {
+    baseSaleAttrId,
+    saleAttrName,
+    spuSaleAttrValueList: [],
+  }
+  saleAttr.value.push(newSaleAttr)
+  // 清空收集的数据
+  saleArrIdAndValueName.value = ''
+}
+
 // 对外暴露
 defineExpose({
   initHasSpuData,

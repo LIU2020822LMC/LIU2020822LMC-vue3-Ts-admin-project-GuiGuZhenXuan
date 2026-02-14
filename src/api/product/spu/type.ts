@@ -79,10 +79,10 @@ export type spuSaleAttrValueList = SaleAttrValue[]
 // 销售属性对象ts类型
 export interface SaleAttr {
   id?: number
-  createTime: null
-  updateTime: null
-  spuId: number
-  baseSaleAttrId: number
+  createTime?: null
+  updateTime?: null
+  spuId?: number
+  baseSaleAttrId: number | string
   saleAttrName: string
   spuSaleAttrValueList: spuSaleAttrValueList
 }
