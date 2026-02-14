@@ -93,12 +93,11 @@
           <!-- 上传组件 -->
           <el-upload
             class="avatar-uploader"
-            action="/upload"
+            action="/api/admin/product/fileUpload"
             :before-upload="beforeAvatarUpload"
             :on-success="handleAvatarSuccess"
             :show-file-list="false"
-            name="image"
-            drag
+            list-type="picture-card"
           >
             <img
               v-if="trademarkParams.logoUrl"
@@ -171,15 +170,16 @@ const updateTrademark = (row: TradeMark) => {
 // 对话框关闭的回调
 const close = () => {
   // 清除表单的验证状态（比如清除校验错误提示、重置字段的 touched 状态等）
-  formRef.value.resetFields()
+  formRef.value?.resetFields()
+  trademarkParams.id = 0
+  trademarkParams.tmName = ''
+  trademarkParams.logoUrl = ''
 }
 
 // 添加品牌按钮的回调
 const addTrademark = () => {
   // 清空表单的数据
-  trademarkParams.id = 0
-  trademarkParams.tmName = ''
-  trademarkParams.logoUrl = ''
+  close()
   // 打开对话框
   dialogVisible.value = true
 }
@@ -212,6 +212,7 @@ const handleSizeChange = () => {
 // 添加品牌的确定与取消按钮
 const Cancel = () => {
   dialogVisible.value = false
+  close()
 }
 const OKBtn = async () => {
   // 在你发请求之前，要对于整个表单进行校验
@@ -279,7 +280,7 @@ const validatorLogoUrl = (rules: any, value: any, callBack: any) => {
 // 校验规则
 const rules = ref({
   tmName: [{ required: true, trigger: 'blur', validator: validatorTmName }],
-  logoUrl: [{ required: true, validator: validatorLogoUrl }],
+  logoUrl: [{ required: true, trigger: 'change', validator: validatorLogoUrl }],
 })
 
 onMounted(() => {
