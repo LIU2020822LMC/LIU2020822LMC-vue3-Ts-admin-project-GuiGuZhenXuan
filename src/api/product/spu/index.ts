@@ -68,6 +68,6 @@ export const reqAddOrUpdateSpu = (data: SpuData) => {
   if (data.id) {
     return request.post<any, any>(API.UPDATESPU_URL, data)
   } else {
-    return request.post<any, any>(API.ADDSPU_URL)
+    return request.post<any, any>(API.ADDSPU_URL, data)
   }
 }

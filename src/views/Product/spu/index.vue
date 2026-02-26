@@ -104,13 +104,19 @@ const GetHasSpu = async (pager = 1) => {
 
 // 添加新的SPU按钮的回调
 const addSpu = () => {
+  spu.value.initAddSpu(categoryStore.c3Id)
   scene.value = 1
 }
 
-const ChangeSize = (number: number) => {
-  scene.value = number
-  // // 再次获取全部的已有SPU
-  // GetHasSpu()
+const ChangeSize = (obj: any) => {
+  scene.value = obj.flag
+  if (obj.params === 'update') {
+    // 更新留在当前页
+    GetHasSpu(pageNo.value)
+  } else {
+    // 添加留在第一页
+    GetHasSpu()
+  }
 }
 
 // 修改已有的SPU的按钮的回调
