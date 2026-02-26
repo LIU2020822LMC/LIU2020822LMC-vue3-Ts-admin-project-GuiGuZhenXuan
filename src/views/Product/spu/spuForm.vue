@@ -92,13 +92,25 @@
         <template #default="{ row }">
           <el-tag
             style="margin: 0px 3px"
-            v-for="item in row.spuSaleAttrValueList"
+            v-for="(item, index) in row.spuSaleAttrValueList"
             :key="item.id"
             closable
+            @close="handleClose(row, index)"
           >
             {{ item.saleAttrValueName }}
           </el-tag>
+          <el-input
+            v-model="row.saleAttrValue"
+            v-if="row.flag === true"
+            placeholder="请你输入属性值"
+            size="small"
+            style="width: 100px"
+            @blur="toLook(row)"
+            @keyup.enter="toLook(row)"
+          ></el-input>
           <el-button
+            v-else
+            @click="toEdit(row)"
             type="success"
             icon="Plus"
             size="small"
@@ -117,7 +129,14 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-button type="primary" size="default">保存</el-button>
+    <el-button
+      type="primary"
+      size="default"
+      @click="save"
+      :disabled="saleAttr.length > 0 ? false : true"
+    >
+      保存
+    </el-button>
     <el-button size="default" @click="Cancel">取消</el-button>
   </el-card>
 </template>
@@ -131,6 +150,7 @@ import {
   getSpuImageList,
   getSpuSaleAttrList,
   getAllSaleAttr,
+  reqAddOrUpdateSpu,
 } from '@/api/product/spu'
 import {
   AllTradeMark,
@@ -141,6 +161,7 @@ import {
   SpuData,
   SpuHasImg,
   TradeMark,
+  SaleAttrValue,
 } from '@/api/product/spu/type'
 
 const $emit = defineEmits(['changeScene'])
@@ -163,7 +184,7 @@ const SpuParams = ref<SpuData>({
   description: '', // SPU的描述
   tmId: '', // 品牌的ID
   spuImageList: [],
-  spuSaleAttrList: null,
+  spuSaleAttrList: [],
 })
 // 控制放大图对话框的显示与隐藏
 const dialogVisible = ref<boolean>(false)
@@ -246,6 +267,73 @@ const addSaleAttr = () => {
 defineExpose({
   initHasSpuData,
 })
+
+// 属性值按钮的点击事件
+const toEdit = (row: SaleAttr) => {
+  saleAttr.value.forEach((item) => {
+    item.flag = false
+  })
+  row.flag = true
+}
+
+// 表单元素失去焦点和回车的事件回调
+const toLook = (row: SaleAttr) => {
+  const { baseSaleAttrId, saleAttrValue } = row
+  // 整理成服务器需要的属性值形式
+  const newSaleAttrValue: SaleAttrValue = {
+    baseSaleAttrId,
+    saleAttrValueName: saleAttrValue as string,
+  }
+
+  // 判断是否为空
+  if ((saleAttrValue as string)?.trim() == '' || saleAttrValue == null) {
+    ElMessage.error('属性值不能为空')
+    return
+  }
+
+  // 判断属性值是否在数组当中存在
+  const repeat = row.spuSaleAttrValueList.find((item) => {
+    return item.saleAttrValueName == saleAttrValue
+  })
+  if (repeat) {
+    ElMessage.error('属性值重复')
+    return
+  }
+
+  // 追加新的属性值对象
+  row.spuSaleAttrValueList.push(newSaleAttrValue)
+
+  // 清空输入框数据
+  row.saleAttrValue = ''
+
+  //切换查看模式
+  row.flag = false
+}
+
+// 关闭标签事件
+const handleClose = (row: SaleAttr, index: any) => {
+  row.spuSaleAttrValueList.splice(index, 1)
+}
+
+// 保存按钮的回调
+const save = async () => {
+  // 1.照片墙的数据
+  SpuParams.value.spuImageList = imgList.value.map((item: any) => {
+    return {
+      imgName: item.name,
+      imgUrl: (item.response && item.response.data) || item.url,
+    }
+  })
+  // 2.销售属性的数据
+  SpuParams.value.spuSaleAttrList = saleAttr.value
+  const result = await reqAddOrUpdateSpu(SpuParams.value)
+  if (result.code === 200) {
+    ElMessage.success(SpuParams.value.id ? '更新成功' : '添加成功')
+    $emit('changeScene', 0)
+  } else {
+    ElMessage.error(SpuParams.value.id ? '更新失败' : '添加失败')
+  }
+}
 </script>
 
 <style scoped></style>

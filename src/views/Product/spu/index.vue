@@ -109,6 +109,8 @@ const addSpu = () => {
 
 const ChangeSize = (number: number) => {
   scene.value = number
+  // // 再次获取全部的已有SPU
+  // GetHasSpu()
 }
 
 // 修改已有的SPU的按钮的回调
