@@ -20,7 +20,8 @@
             type="primary"
             icon="Plus"
             circle
-            title="添加SPU"
+            title="添加SKU"
+            @click="addSku"
           ></el-button>
           <el-button
             type="warning"
@@ -53,13 +54,13 @@
       layout="prev, pager, next, jumper,->,sizes,total"
       :total="total"
       @current-change="GetHasSpu"
-      @size-change="changeSize"
+      @size-change="changeSince"
     />
   </el-card>
   <!-- 添加SKU的子组件 -->
-  <skuForm v-show="scene == 2" />
+  <skuForm v-show="scene == 2" @change-scene="ChangeSince" />
   <!-- 添加SPU|修改SPU子组件 -->
-  <spuForm v-show="scene == 1" @changeScene="ChangeSize" ref="spu" />
+  <spuForm v-show="scene == 1" @changeScene="ChangeSince" ref="spu" />
 </template>
 
 <script setup lang="ts">
@@ -108,7 +109,7 @@ const addSpu = () => {
   scene.value = 1
 }
 
-const ChangeSize = (obj: any) => {
+const ChangeSince = (obj: any) => {
   scene.value = obj.flag
   if (obj.params === 'update') {
     // 更新留在当前页
@@ -127,8 +128,14 @@ const updateSpu = (row: SpuData) => {
 }
 
 // 分页器下拉菜单发生变化的时候触发
-const changeSize = () => {
+const changeSince = () => {
   GetHasSpu()
+}
+
+// 添加SKU按钮的回调
+const addSku = () => {
+  // 点击添加SKU按钮切换场景为2
+  scene.value = 2
 }
 </script>
 
