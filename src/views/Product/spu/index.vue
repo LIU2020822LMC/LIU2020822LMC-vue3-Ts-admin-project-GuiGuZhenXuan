@@ -21,7 +21,7 @@
             icon="Plus"
             circle
             title="添加SKU"
-            @click="addSku"
+            @click="addSku(row)"
           ></el-button>
           <el-button
             type="warning"
@@ -58,7 +58,7 @@
     />
   </el-card>
   <!-- 添加SKU的子组件 -->
-  <skuForm v-show="scene == 2" @change-scene="ChangeSince" />
+  <skuForm v-show="scene == 2" @change-scene="ChangeSince" ref="sku" />
   <!-- 添加SPU|修改SPU子组件 -->
   <spuForm v-show="scene == 1" @changeScene="ChangeSince" ref="spu" />
 </template>
@@ -79,9 +79,10 @@ const scene = ref<number>(0) // 0:显示已有SPU 1：添加或者修改已有SP
 const pageNo = ref<number>(1)
 // 每一页展示几条数据
 const pageSize = ref<number>(5)
-// 获取子组件实例
+// 获取子组件实例spuForm
 const spu = ref<any>()
-
+// 获取子组件实例skuForm
+const sku = ref<any>()
 // 监听三级分类ID变化
 watch(
   () => categoryStore.c3Id,
@@ -133,9 +134,11 @@ const changeSince = () => {
 }
 
 // 添加SKU按钮的回调
-const addSku = () => {
+const addSku = (row: SpuData) => {
   // 点击添加SKU按钮切换场景为2
   scene.value = 2
+  // 调用子组件方法初始化skuForm组件数据
+  sku.value.initSkuData(categoryStore.c1Id, categoryStore.c2Id, row)
 }
 </script>
 
